@@ -1,0 +1,71 @@
+---
+title: |
+  ./img/art_piece1_mod1.jpg
+---
+
+# Background {#intro}
+
+```{r}
+library(readr)
+library(dplyr)
+datCUR <- readr::read_csv("C://data/dataPlanning/PhDProjects.csv")
+
+# DT::datatable(glimpse(datCUR))
+```
+
+There are multiple difference sources of information for this calendar. To be able to keep this `upto` date and current I have developed scripts for each unique data-source to my database of events ([coming])). 
+
+```{r}
+library(DiagrammeR)
+
+
+```
+
+
+
+Timeline figures can include information on past and future
+
+  - Actions 
+  - Milestones
+  - Tasks
+
+```{r eval = T, out.width = "1200px"}
+library(DiagrammeR)
+
+# mermaid("
+# sequenceDiagram
+#   customer->>ticket seller: ask ticket
+#   ticket seller->>database: seats
+#   alt tickets available
+#     database->>ticket seller: ok
+#     ticket seller->>customer: confirm
+#     customer->>ticket seller: ok
+#     ticket seller->>database: book a seat
+#     ticket seller->>printer: print ticket
+#   else sold out
+#     database->>ticket seller: none left
+#     ticket seller->>customer: sorry
+#   end
+# ")
+
+library(knitr)
+
+knitr::include_graphics(path = "./img/art_piece1_mod1.jpg")
+```
+
+The purpose of this repository is to show how, with references to "real-world applications"reproducible timelines and tasklists, and timetables for research projects. I have assumed that you have installed the nessacery  packages following instructions in the `README`.
+
+```{r}
+# [coming] readme currently about file structure
+#child = "README.md"
+```
+
+*strengths*
+
+The strength of this approach is that I can personally keep on top of my tasks, goals and timelines for my PhD research.
+
+*future development*
+
+And additional possibility is that this template can be scaled to work for all of SciTech, UC or maybe even global graduates.
+
+Generally, this work is focused on writing the scripts to automate the integration between emails, PhD timeline and other projects. To do this we need to import datasets and modify the structure of these inputs to match the information needed to construct a timeline of tasks and objectives.

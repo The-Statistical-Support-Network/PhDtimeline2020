@@ -1,0 +1,56 @@
+---
+title: "A PhD template for tasks and timelines in a COVID19 world"
+author: "Anthony Davidson"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "A simple baseline dataset to generate weekly timelines and task list in `RMarkdown`. I have developed this from a minimal example of using the bookdown package to write a book and reproducible report. The output format for this example is `bookdown::gitbook`."
+---
+
+```{r setupLibraries}
+# knitr::opts_chunk(echp)
+
+library(knitr)
+library(rmdformats)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+
+# myPaths <- .libPaths("C:/Program Files/R/R-4.0.1/library")
+# myPaths <- c(myPaths)
+# .libPaths(myPaths)  # add new path
+# .libPaths()
+
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+
+## Global options
+# options(max.print="75")
+knitr::opts_chunk$set(
+	message = FALSE,
+	warning = FALSE,
+	include = FALSE
+)
+```
+
+# Overview {#corro .tabset}
+
+Constructing, managing and submitting PhD timelines can be a time consuming and often fruitless venture. I have found that creating realistic timelines, tasklists and milestones for graduate research hard to produce due to unpredictable outcomes of research (e.g time taken to collect data and produce results and publish results). This has been made even more challenging under COVID19 conditions because of the unpredictable nature of the disease and the impacts of the pandemic both economically and socially throughout the community.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# datCUR <- readr::read_csv(here::here("data/PhDProjectsINCallrelatedAUG.csv"))
+```
+
+> Note: Orginally I wanted to create a simple shiny dashboard that automatically generates a reproducible report including an integrated task, milestone and time management system for graduate research planning with examples from my own PhD work. 
+
+```{r}
+#coming
+# source(here::here("00-Proposal.Rmd"))
+```
+

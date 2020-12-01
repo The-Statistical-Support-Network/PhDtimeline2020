@@ -1,0 +1,109 @@
+## Software
+
+```r
+# datRSTUDIO <- rstudioapi::versionInfo()
+# saveRDS(datRSTUDIO, file = "./data/rStudioDATAinfo.rds")
+# datRSTUDIO <- readRDS("./data/rStudioDATAinfo.rds")
+```
+
+###### R version
+
+R is currently running `r #eval = FALSE #datRSTUDIO` and Rstudio ...`r #eval = FALSE #datRSTUDIO`
+
+##### R Packages
+
+One of the strengths of working in R is that all the packages and other software needed to develop the operational R libraries (CRAN packages) all open-source and free. The downside of open source science can be the difficultly to reproduce more experimental packages on servers such as `github`.
+
+For the PhD planning template I have began with a `tidyverse` approach and added the additional R packages (as stable as possible) to the notes below. These additional packages are:
+
+*[code here for all packages used....]*
+
+###### `tidyverse`
+
+The general concept of `tidyverse` is to create a collection of R packages that make the following workflow below straightforward, at least in the sense of R functions instead of writing all the functions by hand.
+
+###### `diagrammR`
+
+```{r}
+library(DiagrammeR)
+```
+
+###### `dataspice`
+
+```{r child = "data/dataSpice4stepGuide.Rmd", eval = T}
+library(dataspice)
+```
+
+###### `rmarkdown`
+
+[rmarkdown basics]
+
+###### `bookdown`
+
+[bookdown basics]
+
+This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "[Get Started](https://bookdown.org/yihui/bookdown/get-started.html)" at https://bookdown.org/yihui/bookdown/ for how to compile this example into HTML. You may generate a copy of the book in `bookdown::pdf_book` format by calling `bookdown::render_book('index.Rmd', 'bookdown::pdf_book')`. More detailed instructions are available here https://bookdown.org/yihui/bookdown/build-the-book.html.
+
+ 📜_bookdown.yml
+
+
+ 📜_output.yml
+
+
+You can find the preview of this example at https://bookdown.org/yihui/bookdown-demo/.
+
+###### `tidyPipes`
+
+[My package under personal development]: Overall, there isn't any methods beyond getting all of my appointments and timelines into a single format to be able to plan my `phd` work and other projects developed around this work.
+
+See the `tidyPipes` manual for more details on the choice of structure and representation.
+
+```{r eval = FALSE}
+# datRSTUDIO <- rstudioapi::versionInfo()
+# saveRDS(datRSTUDIO, file = "./data/rStudioDATAinfo.rds")
+# datRSTUDIO <- readRDS("./data/rStudioDATAinfo.rds")
+
+datR <- R.Version()
+
+grViz("
+digraph nicegraph {
+
+  # graph, node, and edge definitions
+  graph [compound = true, nodesep = .5, ranksep = .25,
+         color = crimson]
+
+  node [fontname = Helvetica, fontcolor = darkslategray,
+        shape = rectangle, fixedsize = true, width = 1,
+        color = darkslategray]
+
+  edge [color = grey, arrowhead = none, arrowtail = none]
+
+  # subgraph for R information
+  subgraph cluster0 {
+    node [fixedsize = true, width = 3]
+    '@@1-1' -> '@@1-2' -> '@@1-3' -> '@@1-4'
+    '@@1-4' -> '@@1-5' -> '@@1-6' -> '@@1-7'
+  }
+
+  # subgraph for RStudio information
+  subgraph cluster1 {
+    node [fixedsize = true, width = 3]
+    '@@2' -> '@@3'
+  }
+
+  Information             [width = 1.5]
+  Information -> R
+  Information -> RStudio
+  R -> '@@1-1'            [lhead = cluster0]
+  RStudio -> '@@2'        [lhead = cluster1]
+
+}
+
+[1]: paste0(names(R.Version())[1:7], ':\\n ', R.Version()[1:7])
+[2]: paste0('RStudio version:\\n ', rstudioapi::versionInfo()[[1]])
+[3]: paste0('Current program mode:\\n ', rstudioapi::versionInfo()[[2]])
+
+")
+```
+
+etc....

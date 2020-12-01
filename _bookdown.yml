@@ -1,0 +1,7 @@
+book_filename: "Dynamic and reproducible reporting for graduate research"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: " "
+output_dir: "docs"
+rmd_files: ["index.Rmd", "00-proposal.Rmd","01-introduction.Rmd","03-method.Rmd", "04-application.Rmd"]
