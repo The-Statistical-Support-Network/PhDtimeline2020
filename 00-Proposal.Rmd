@@ -1,0 +1,103 @@
+## Proposal
+
+This repository is a draft of the baseline approach I am using for my own time management for the last 6months of my PhD but could easily extended to similar graduate research, professional projects and consulting situations.
+
+#### Outputs {.tabset.tabpills}
+
+The results of the scripts and functions within this repository are focused around the baseline dataset and different combinations of these core variables. The baseline dataset (name: ` `) and core code has been developed and extended from other open source science projects.
+
+##### Stage One: Baseline dataset
+
+```{r}
+library(DiagrammeR)
+# vignette()
+
+```
+
+Each individual graduate student will have a collection of data, methods and tools needed to conceptualize, create and produce a thesis however by structuring a timeline around key dates (*milestones*) within the same task lists database. This database is based on a simple collection of key variables. To begin with, the standard milestones and key dates can be generated based of each individuals unique starting date using an extension of Bernd's script:
+
+*Milestones*
+
+```{r}
+#milestones datset
+#generated from bernds R code
+```
+
+*Timeline*
+
+This function generates a timeline from the baseline dataset grouped by chapter impact or status....
+
+```{r}
+
+```
+
+*Task lists*
+
+```{r}
+
+```
+
+##### Stage two (updated Oct 2020)
+
+> August2020: I developed this idea further down the track of an interactive web application using shiny.
+
+```{r echo = FALSE}
+# shiny::shinyAppDir(
+#   system.file("examples/06_tabsets", package="shiny"),
+#   options = list(width = "100%", height = 700)
+# )
+```
+
+> July2020: I developed this idea further down the track of an interactive web application using shiny.
+
+> June2019: This could be done by hand but I have extended Bernds idea of a timeline etc in R for PhD candidates to include better visualisations and other key points. I see this as being an interactive tool for future candidates if I can find funding to annotate the code properly so someone else with no R knowledge can navigate this.
+
+```{r}
+# dat <- read.text
+```
+
+##### Future stages {.tabset}
+
+With the support of other users there is potential to develop the proposed structure here to create the following extensions of this work.
+
+###### Stage three
+
+Visualise and publish interactive report for SciTech Students. STATUS: [Example of my Phd currently in development]
+
+###### Stage four
+
+Intergrate Outlook emails and tasks
+
+STATUS: [currently methods draft]
+
+###### Stage five
+
+Intergrate Microsoft planner
+
+STATUS: [currently methods draft]
+
+###### Stage six
+
+Internal publishing on uni intranet.[currently methods draft]
+
+*Possible University of Canberra outputs*
+
+```
+- Progress Report
+- APR
+- Research Review
+- Scholarship applications
+- Timelines
+- Future tasklists/goals
+```
+
+##### Side projects
+
+[*coming*] 
+
+SEE the`tidyPipes` MANUAL for general concept and approach. This repository contains example data and scripts needed to visualize and communicate multiple different projects including:
+
+- `ACTSeedlings/`[*coming*]
+- `DynamicCVs/`[*coming*]
+- `flatttingRMDstlyle/` (a repository for documenting and recording reproducible reports for my flatting arrangements).
+- `PhDplanningRMDstyle/` (the documentation and reporting for the final 6months of my PhD).

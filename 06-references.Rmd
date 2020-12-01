@@ -1,0 +1,280 @@
+`r if (knitr::is_html_output()) '
+# Resources {-}
+'`
+
+### Using this work {.tabset}
+
+All of this documentation and resources are avaliable on the internet (github) and are based on open-source, free software.
+
+> NOTE: Licsencing???
+
+There are two options to use this resource:
+
+#### Personal use
+
+Download a zip file of the report here:
+
+and then run and work on document through RSTudio on your local computer.
+
+#### Contributions and development
+
+To use this tool/template:
+
+1. Download the zip file from `github` [here](https://davan690.github.io/PhDtimeline2020/)
+
+2. Fork the project from `github` [here](https://davan690.github.io/PhDtimeline2020/) 
+
+*Simplist option:* **Just use planner**
+
+If it is all too much to code up the book I can help out with another function that works with planner data (Microsoft application). This adds more flexiblility to the input data and other sources of information but begins to step away from aspects of reproducibility captured when using a more intergrated approach such as rmarkdown.
+
+```{r include = TRUE}
+#function to import planner data
+#coming
+#shiny interactive button demo here
+```
+
+####  [University of Canberra info](https://www.canberra.edu.au)
+
+Add key UC resources here. Quick Links for now:
+
+- **[Future Students](https://www.canberra.edu.au/future-students)**
+- **[On Campus](https://www.canberra.edu.au/on-campus)**
+- **[Research](https://www.canberra.edu.au/research)**
+- **[About UC](https://www.canberra.edu.au/about-uc)**
+- [Find a Course](https://www.canberra.edu.au/future-students/courses/find-a-course)
+- [Find a Unit](https://www.canberra.edu.au/future-students/courses/find-a-unit)
+- [Reconciliation](https://www.canberra.edu.au/about-uc/reconciliation)
+- [Donate](https://www.canberra.edu.au/about-uc/uc-foundation)
+- [Information for Journalists](https://www.canberra.edu.au/about-uc/media/monitor)
+- [Find a Staff Member](https://www.canberra.edu.au/directory/ "Opens in a new window")
+- [Learning at UC](https://www.canberra.edu.au/about-uc/learning-at-uc)
+- [Jobs at UC](https://www.canberra.edu.au/about-uc/work-at-uc/vacancies)
+
+- [Domestic Future Students](https://www.canberra.edu.au/future-students/domestic-students)  
+  1800 864 226  
+  [Email](mailto:study@canberra.edu.au?subject=Enquiry)  
+  [Enquire Online](https://www.canberra.edu.au/askuc/domesticenquiry)
+- [International Future Students](https://www.canberra.edu.au/future-students/international-students)  
+  +61 2 6201 5342  
+  [Email](mailto:international@canberra.edu.au?subject=Enquiry)  
+  [Enquire Online](https://www.canberra.edu.au/askuc/InternationalEnquiry)
+- [Current Students](https://www.canberra.edu.au/current-students)  
+  1300 301 727  
+  [Email](mailto:student.centre@canberra.edu.au?subject=Enquiry)
+
+- [About the University of Canberra](https://www.canberra.edu.au/about-uc)
+- [UC Schools](https://www.canberra.edu.au/about-uc/uc-group/uc-schools)
+- [UC College (UCC)](https://www.canberra.edu.au/uc-college)
+- [UCC English Language Centre](https://www.canberra.edu.au/uc-college/uccelc)
+- [UC Union](https://www.canberra.edu.au/about-uc/uc-group/uc-union)
+
+##### Our Faculties
+
+- [Arts and Design](https://www.canberra.edu.au/about-uc/faculties/arts-design)
+- [Business, Government and Law](https://www.canberra.edu.au/about-uc/faculties/busgovlaw)
+- [Education, Science, Technology and Mathematics](https://www.canberra.edu.au/about-uc/faculties/estem)
+- [Health](https://www.canberra.edu.au/about-uc/faculties/health)
+
+###### SciTech
+
+- [Domestic Future Students](https://www.canberra.edu.au/future-students/domestic-students)  
+  1800 864 226  
+  [Email](mailto:study@canberra.edu.au?subject=Enquiry)  
+  [Enquire Online](https://www.canberra.edu.au/askuc/domesticenquiry)
+- [International Future Students](https://www.canberra.edu.au/future-students/international-students)  
+  +61 2 6201 5342  
+  [Email](mailto:international@canberra.edu.au?subject=Enquiry)  
+  [Enquire Online](https://www.canberra.edu.au/askuc/InternationalEnquiry)
+- [Current Students](https://www.canberra.edu.au/current-students)  
+  1300 301 727  
+  [Email](mailto:student.centre@canberra.edu.au?subject=Enquiry)
+
+The SciTech department has undergone a series of administrative changes during my PhD candidature that has impacting my ability to collaborate easily between sections of old and new administrative rules.
+
+To help break the tasks down I have constructed a baseline dataset that includes `r #length(dat$eventCode)` individual rows, each defining an event of importance to my SciTech application. I then take this "baseline" dataset and viusualise the information in the way that the application asks for.
+
+https://www.canberra.edu.au/research/current-research-students/manage-your-candidature/rgrad
+
+<!-- 1. You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods). -->
+
+- [Find a Course](https://www.canberra.edu.au/future-students/courses/find-a-course)
+- [Find a Unit](https://www.canberra.edu.au/future-students/courses/find-a-unit)
+- [Reconciliation](https://www.canberra.edu.au/about-uc/reconciliation)
+- [Donate](https://www.canberra.edu.au/about-uc/uc-foundation)
+- [Information for Journalists](https://www.canberra.edu.au/about-uc/media/monitor)
+- [Find a Staff Member](https://www.canberra.edu.au/directory/ "Opens in a new window")
+- [Learning at UC](https://www.canberra.edu.au/about-uc/learning-at-uc)
+- [Jobs at UC](https://www.canberra.edu.au/about-uc/work-at-uc/vacancies)
+- [About the University of Canberra](https://www.canberra.edu.au/about-uc)
+- [UC Schools](https://www.canberra.edu.au/about-uc/uc-group/uc-schools)
+- [UC College (UCC)](https://www.canberra.edu.au/uc-college)
+- [UCC English Language Centre](https://www.canberra.edu.au/uc-college/uccelc)
+- [UC Union](https://www.canberra.edu.au/about-uc/uc-group/uc-union)
+
+###### Our Research Institutes
+
+- [Institute for Applied Ecology](https://appliedecology.edu.au)
+- [Institute for Governance and Policy Analysis](https://www.governanceinstitute.edu.au/)
+- [Research Institute for Sport and Exercise](https://www.canberra.edu.au/research/institutes/ucrise)
+- [More About Our Research](https://www.canberra.edu.au/research)
+
+<!-- ![](./_resources/a92239e121ca41c69f05a76003809c9d.png) -->
+
+[Facebook](https://www.facebook.com/UniversityOfCanberra) [Twitter](https://twitter.com/UniCanberra) [Instagram](https://instagram.com/unicanberra) [YouTube](https://www.youtube.com/user/uniofcanberra)
+
+[Copyright / Disclaimer / Privacy](https://www.canberra.edu.au/about-uc/policy-and-legislation/disclaimer-copyright-privacy-accessibility) [Sitemap](https://www.canberra.edu.au/sitemap)
+
+University of Canberra, ACT 2601 Australia, Switchboard +61 2 6201 5111, © 2015 University of Canberra  
+The University of Canberra is located on Ngunnawal Country
+
+CRICOS number: University of Canberra / University of Canberra College #00212K
+
+#### Graduate reporting (RGrad)
+
+The Annual Progress Report 2020 (APR) is a mandatory milestone for all HDR candidates, except:
+
+•	Those who are in their first semester of candidature;
+
+•	Those who are on leave and will be on leave, until Semester 2, 2021;
+
+•	Those who are have submitted their thesis and are waiting for reports.
+
+#### Issues {.tabset}
+
+After seven days, if you have still not reviewed and resubmitted your APR, you will receive an email letting you know that your APR has been forwarded automatically to your ADR. You will not be able to review the APR until the ADR has completed their assessment.
+
+##### Accessing the APR
+
+Students, please ensure you log into MyUC using your student details (e.g *u123456*). Once you have logged into MyUC, navigate to the Research tab and there will be a link to the APR under the Research Portals section.
+
+1. Go to https://www.canberra.edu.au/![image-20201011130016802](C:\PhD\APR-annualProgress-Report\img\image-20201011130016802.png)
+
+2. Then Current students
+
+   ![image-20201011130227834](C:\PhD\APR-annualProgress-Report\img\image-20201011130227834.png)
+
+3. LogIN (maker sure this is student email)
+
+4. Follow links to graduate research page.. 
+
+   ![image-20201011130408054](C:\PhD\APR-annualProgress-Report\img\image-20201011130408054.png)
+
+   5. And finally to the Annual Progress reports...
+   6. ![image-20201011131510659](C:\PhD\APR-annualProgress-Report\img\image-20201011131510659.png)
+
+Overall the 
+
+Quick NOTES: **The comments fields all seem to be mandatory this year but are not identified as being mandatory.**
+
+##### Search fail
+
+![image-20201011125916214](C:\PhD\APR-annualProgress-Report\img\image-20201011125916214.png)
+
+##### Milestones page missing
+
+A number of students have reported that they are unable to submit their APR as the milestones page is showing as incomplete. Please try entering comments against all of the milestones, even if the text is ‘no comment’.
+
+The comments fields all seem to be mandatory this year but are not identified as being mandatory.
+
+##### Saving error
+
+A number of staff and students have reported that the APR will not save after they have entered all of their comments. We understand that this is incredibly frustrating and Service Desk are working to resolve the problem. To avoid this from happening please save the APR after completing each comment box. 
+
+##### Additional unit appearing in Enrolments section
+
+Some students have reported that there is a unit listed in the Candidate Enrolment section of the APR that they have not been enrolled in. So far this always seems to be the unit 10454 – Health Program Planning and Evaluation. If this happens please check RGrad that the unit is not listed there, if its not then its just an error in the APR. In order to progress the APR please enter a comment stating that this unit is incorrectly listed and proceed with submitting your APR.
+
+We are not sure why any of these errors are occurring and understand that they make completing the online APR more frustrating however we are working with ITM to have these resolved and we hope to have a smooth system back in place soon.
+
+If the suggest work arounds do not work, or you encounter any other problems please let our office know.
+
+APRs must be completed through the online system in order to progress the workflow to ensure all stakeholders submit their comments and a proper review is completed. 
+
+> NOTE: *Please complete your APR as soon as possible.*
+
+<!-- ; Word document -->
+
+<!-- #  Documentation {.tabset} -->
+
+```{r eval = F}
+# Landing timeline
+#@august2020
+library(readr)
+library(lubridate)
+library(dplyr)
+# Fulldata <- join_rows....(PhdTasks, PhDplan, PhDjobs etc etc)
+
+# write_csv(Fulldata, "./data/raw_data/PhDProjectsINCallrelated.csv")
+
+#data import options....
+
+dat <- read_csv(here::here("./data/FINALFINALdatasetBOUNDgaps.csv"))
+
+dat1 <- dat %>%
+  # mutate(newDate = ifelse(trueDate == "NA", 
+  #                          yes = startDate, 
+  #                          no = trueDate)) %>%
+      remove_missing(vars = "startDate") #%>%
+        # mutate(trueDate = as.Date(lubridate::dmy(dat$startDate)))
+
+  # as.Date(lubridate::dmy(dat$trueDate))
+  # as.Date(lubridate::dmy(dat$startDate))
+
+# write.csv(dat, "./data/buggeredAT.csv")
+
+dat2 <- dat1 %>%
+  select(trueDate, # real date format
+         shortName, 
+         Tasks,
+         Notes, 
+         GeneralDesc) %>%
+remove_missing() 
+
+# %>%
+#   filter(GeneralDesc != "key pay" & 
+#              GeneralDesc == "key tasks") 
+
+
+
+
+dat2
+
+
+ggplot(dat2, aes(x = dmy(trueDate), y = GeneralDesc)) + 
+  # geom_rect(aes(xmin=min(datCUR1$trueDate),xmax = max(datCUR1$trueDate), ymin = -inf , ymax = inf ))  +
+  geom_point(aes(x = dmy(trueDate), y = GeneralDesc), size = 4, alpha = 0.7,  size = 5, col = "black", fill = "green") +
+  
+  
+  # geom_line(size = 0.9, col = "grey50", lty = 3) +
+  xlab("trueDate number") +
+  ylab("Chapter") +
+  # facet_grid(Chapter~status) + 
+  # geom_label(aes(x = trueDate, y = impact, label = shortName),  size = 2) +
+  # theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        # panel.spacing = unit(2, "lines"),
+        panel.border = element_blank(),
+        
+        axis.title.y = element_text(colour = "black", angle = 90),
+        axis.title.x = element_text(colour = "black"),
+        
+        axis.text.y=element_text(colour = "black"),
+        axis.text.x = element_text(colour = "black"),
+        
+        axis.ticks.x = element_line(size = 1),
+        axis.ticks.y = element_line(size = 1),
+        
+        axis.line.x = element_line(size = 1),
+        axis.line.y = element_line(size = 1))
+
+
+
+kableExtra::kable(dat2)
+```
+
+<!-- # Covid19 scholarship -->
+
+<!-- # ```{r child = "SciTechCoiv19Application.Rmd", eval = F} -->
+<!-- # ``` -->

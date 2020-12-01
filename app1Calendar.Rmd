@@ -1,0 +1,31 @@
+---
+title: "A interactive calendar"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+runtime: shiny
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Interactive calendar
+
+A test...
+
+```{r}
+#install github package
+#aug2020
+# devtools::install_github("davan690/fullcalendar")
+library(fullcalendar)
+
+fullcalendar()
+```
+
+##### Tui calender
+
+[coming]

@@ -1,0 +1,1162 @@
+# Methods {#method}
+
+The method to this approach is a combination of computer science, ecology and tertery education research to create a accessable, open-source and reproducible timeline, tasklist and milestones as research project develop and evolve into finalised results. Generally, the baseline dataset can be viewed as time series data. A good general tutorial for time series data is here on [youtube]("https://www.youtube.com/watch?v=uenWg7ZSu4Y"). There are several packages to visualise timeseries data in R, below are selected sections of code that generate the timeline, tasklists and mileestones. 
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(lubridate)
+# vignette("gdata")
+library(knitr)
+library(ggrepel)
+# knitr::include_graphics(path = "./img/TidyPipes-calenderJUL2020v2.png")
+```
+
+Overall there are two generalised datasets that may be helpful to other individuals for each project or combination of projects (for the APR for example). 
+
+The baseline dataset is found in the `.xlsx` file named "baseline-dataset-calender.xlsx". This is the base file I have been adding information to when I change the overall structure of the calendar projects.
+
+- The data for this collection of tasks associated with timelines and targets. 
+
+```{r message=FALSE, warning=FALSE,echo = FALSE, include=FALSE, eval = F}
+#### these are now as csv files for each datasheet entry
+#orginal excel in Raw_data file...
+#no conversion to csv to aviod same data issues...
+
+datPhD <- readr::read_csv("C://PhD/APR-annualProgress-Report/data/PhDProjects.csv")
+datCouncil <- readr::read_csv("C://PhD/APR-annualProgress-Report/data/CouncilProjects.csv")
+datInvert <- readr::read_csv("C://PhD/APR-annualProgress-Report/data/InvertProjects.csv")
+                             
+## Full tasks database
+datBASE <- bind_rows(datPhD, datCouncil, datInvert) %>%
+  filter(project != "NA") %>%
+    mutate(month = as.factor(month))
+
+levels(datBASE$month) <- c("january","february", "march", "april", "may" ,"june", "july", "august","september", "october", "november", "december")
+
+# Now let’s load in some data
+#milestones is the demo data
+#actions is my data
+
+df <- readr::read_csv(here::here('./data/milestones.csv'))
+
+# df$status
+# names(datBASE)
+### Subset dataframe
+
+
+# > time.check= seq(as.Date('1985-01-01'),as.Date('2012-12-31'),by='day')
+# > length(time.check)
+# [1] 10227
+# 
+# DF <- data.frame(Year = rep(1985, 4), 
+#                  Month = rep(1, 4), 
+#                  Day = c(1,2,5,6), 
+#                  Z = 7:10)
+# DF
+# #>   Year Month Day  Z
+# #> 1 1985     1   1  7
+# #> 2 1985     1   2  8
+# #> 3 1985     1   5  9
+# #> 4 1985     1   6 10
+# colnames(DF)[4] <- "Data"
+# DF
+# #>   Year Month Day Data
+# #> 1 1985     1   1    7
+# #> 2 1985     1   2    8
+# #> 3 1985     1   5    9
+# #> 4 1985     1   6   10
+# library(lubridate)
+# #> 
+# #> Attaching package: 'lubridate'
+# #> The following object is masked from 'package:base':
+# #> 
+# #>     date
+# DF$DATE <- make_date(year = DF$Year, month = DF$Month, day = DF$Day)
+# DF
+# #>   Year Month Day Data       DATE
+# #> 1 1985     1   1    7 1985-01-01
+# #> 2 1985     1   2    8 1985-01-02
+# #> 3 1985     1   5    9 1985-01-05
+# #> 4 1985     1   6   10 1985-01-06
+# FullSeq <- seq.Date(from = min(DF$DATE), to = max(DF$DATE), by = 1)
+# Missing <- FullSeq[!FullSeq %in% DF$DATE]
+# Missing
+# #> [1] "1985-01-03" "1985-01-04"
+
+## First make up some mock data
+# my_data <- data.frame(date = seq(as.Date("2010-01-01"), as.Date("2015-12-31"), 
+#                                 by = "1 month"), 
+#                      value = rnorm(72))
+# 
+# ## Remove some observations so we have an incomplete data set
+# my_incomplete_data <- my_data[sort(sample(nrow(my_data), 60)), ]
+# 
+# ## Make a data frame with a full series of dates from the min date to the max date
+# ## in the incomplete data frame
+# full_dates <- seq(min(my_incomplete_data$date), max(my_incomplete_data$date), 
+#                   by = "1 month")
+# full_dates <- data.frame(date = full_dates)
+# 
+# ## Merge the complete data frame with the incomplete to fill in the dates and add 
+# ## NAs for missing values
+# my_complete_data <- merge(full_dates, my_incomplete_data, by = "date", 
+#                           all.x = TRUE)
+
+# NOT RUN {
+## locale-specific version of the date
+# format(Sys.Date(), "%a %b %d")
+# }
+# NOT RUN {
+## read in date info in format 'ddmmmyyyy'
+## This will give NA(s) in some locales; setting the C locale
+## as in the commented lines will overcome this on most systems.
+## lct <- Sys.getlocale("LC_TIME"); Sys.setlocale("LC_TIME", "C")
+# x <- c("1jan1960", "2jan1960", "31mar1960", "30jul1960")
+# z <- as.Date(x, "%d%b%Y")
+## Sys.setlocale("LC_TIME", lct)
+# z
+
+## read in date/time info in format 'm/d/y'
+# dates <- c("02/27/92", "02/27/92", "01/14/92", "02/28/92", "02/01/92")
+# as.Date(dates, "%m/%d/%y")
+
+## date given as number of days since 1900-01-01 (a date in 1989)
+# as.Date(32768, origin = "1900-01-01")
+## Excel is said to use 1900-01-01 as day 1 (Windows default) or
+## 1904-01-01 as day 0 (Mac default), but this is complicated by Excel
+## incorrectly treating 1900 as a leap year.
+## So for dates (post-1901) from Windows Excel
+# as.Date(35981, origin = "1899-12-30") # 1998-07-05
+## and Mac Excel
+# as.Date(34519, origin = "1904-01-01") # 1998-07-05
+## (these values come from http://support.microsoft.com/kb/214330)
+
+## Experiment shows that Matlab's origin is 719529 days before ours,
+## (it takes the non-existent 0000-01-01 as day 1)
+## so Matlab day 734373 can be imported as
+# as.Date(734373, origin = "1970-01-01") - 719529 # 2010-08-23
+## (value from
+## http://www.mathworks.de/de/help/matlab/matlab_prog/represent-date-and-times-in-MATLAB.html)
+
+## Time zone effect
+# z <- ISOdate(2010, 04, 13, c(0,12)) # midnight and midday UTC
+# as.Date(z) # in UTC
+# }
+# NOT RUN {
+# ## these time zone names are common
+# as.Date(z, tz = "NZ")
+# as.Date(z, tz = "HST") # Hawaii
+# }
+
+# set Home directory > home = setwd(Sys.getenv("HOME")); >  > # make path to the csv file > fpath = file.path(home, "Desktop", "at0901.csv"); > # read the csv file > at0901 = read.csv(fpath, header=TRUE);
+```
+
+### Data {.tabset}
+
+Generally the concept is to create a baseline dataset of information and then extend this using `dataspice` to create a tidy format of data that can then be modelled and visualised using the `tidyverse` suite of tools.
+
+```{r eval=FALSE, include=FALSE}
+# glimpse(datBASE)
+# dt <- data.frame(mon = c(10, 4), day = c(10, 4), year = c(2017, 2018))
+# with(dt, ymd(paste(year, mon, day, sep = "-")))
+#> [1] "2017-10-10" "2018-04-04"
+
+
+### to correct ggplot subset
+datBASE1 <- datBASE  %>%
+    dplyr::select(startDate,month, year, milestone, status, shortName, project) %>%
+                 mutate(date = as.Date(startDate, "%d/%m/%y"))
+# ,
+#                        month = as.numeric(as.character(month)),
+#                        year = as.numeric(year),
+#                        milestone = as.factor(milestone),
+#                        status = as.factor(status))
+# glimpse(datBASE1)
+# df$date <- with(df, ymd(sprintf('%04d%02d%02d', year, month, 1)))
+df <- datBASE1
+
+# library(lubridate)
+# dt <- data.frame(mon = c(10, 4), day = c(10, 4), year = c(2017, 2018))
+# with(dt, ymd(paste(year, mon, day, sep = "-")))
+#> [1] "2017-10-10" "2018-04-04"
+
+# datBASE1$date <- with(datBASE1, ymd(sprintf('%04d%02d%02d', year, month, 1)))
+df <- df[with(df, order(date)), ]
+# head(df)
+text_offset <- 0.05
+
+list.files("./data/")
+```
+
+To begin with I have collated and restructured the avaliable data from downloaded `.ics` data as a csv and the UCSRC council calendar. This sorted data was orginally saved as "baseline-dataset-calender.xlsx" but as I couldnt get the xcel package to work nicely I converted each project dataset into a csv file stored in the `./data/` folder.
+
+```{r eval = F}
+source("C://PhD/APR-annualProgress-Report/R/importDATAscript.R", echo = FALSE)
+
+DT::datatable(head(datBASE))
+
+#incorperate milestones 
+# source(here::here("./vignettes/milestonesfromdataframe.Rmd"), local = TRUE,opts_knit(rmarkdown.html_vignette.check_title = FALSE))
+# vignette("./vignettes/milestones-from-dataframe.html")
+```
+
+> IS THIS LOGICAL - scalable?
+
+The baseline dataset for this report/analysis is generated from the a collection of data sources including calendars, online storage, planner, oneNote and outlook (others to come) task database. This is defined by the combination of projects and `eventCode` variables.
+
+```
+📂data
+  ┣ 📂metadata  {files generated from the dataspice 	
+  ┣					collection of applications}
+  ┣
+  ┣ 📂pdfs		{directly linked pdf resources for the 	
+  ┣					planning repository}
+  ┣
+  ┣ 📂ucTemplates	{orginally proposed assessment 		
+  ┣						templates from University of 
+  ┣						Canberra}
+  ┣
+  ┣ 📂raw_data	  {any raw data that a user wants to 	
+                    add. THis can then be transformed
+                    into the same structure as the
+                    baseline dataset using a R script
+                    for that translation}
+```
+
+Found in the `./data/` folder. Raw data from the original sources can be found in the `./raw_data/`. The meta-data associated with the transformation of the raw data into the baseline dataset can be found in the `README.Rmd` file in each folder.
+
+```{r}
+dat <- read.csv("C://data/dataPlanning/PhDProjectsINCallrelated.csv")
+DT::datatable(head(dat))
+```
+
+This baseline dataset is documented using `dataspice` package and the following steps:
+
+┣ 📜fullPhDdatasetAUG2020.csv
+┣ 📜keydatesBERND.csv
+┣ 📜newCouncilTasks.csv
+┣ 📜reportcalendar.csv
+┣ 📜reportdatatimeline.csv
+┣ 📜reportdatatimelineALL.csv
+┣ 📜reportmilestonesALL.csv
+┣ 📜reportTaskList.csv
+┣ 📜reportTaskListDEMO.csv
+┣ 📜reportTaskListDEMOpivot.csv
+┣ 📜reportTaskListDEMOpivotPLUS.xlsx
+┗ 📜tableOuput.csv
+
+#### Baseline dataset`.csv`
+
+Generally the data can be imported as a csv, or other forms. 
+
+```{r}
+library(readr)
+emailsCalender1 <- read_csv("C://PhD/APR-annualProgress-Report/data/raw_data/anuemails.CSV")
+#str(emailsCalender1)
+```
+
+#### Variable structure
+
+To help break the tasks down I have defined an event of importance to my SciTech application with several core variables that help with visualisation and grouping of tasks. This template is scalable and can be modified for each project/PhD candidate however if the core variables are modified in there naming properties the current reproducible report will not run.
+
+##### `eventCode`
+
+Each unique task/project/goal has an `eventCode`. This event code is comprised of the general area (i.e `phd`) then pasted together with date and 3 digit number depending on iteration of this.
+
+> Note: This directly relates to the exported planner files unique event code.
+
+Currently the database for my PhD timeline consists of `rlength(datCUR$eventCode)` entries with `r length(unique(datCUR$eventCode)) #unique codes` in the following groups:
+
+> NOTE: Limitations? scale and replication?
+
+- If we put strong naming conventions around the eventCode we may end up limiting the number of entries in a single workflow/pipeline.
+
+- Currently input data can be added using teams and then exported here but have not worked out a way to import data constructed here unless I can access the sharepoint files through Microsoft Graph.
+
+Split by visualisation datasets in main data folder.
+
+```{r}
+library(dplyr)
+library(qwraps2)
+#could be done with dataspice in future.
+datNAMES <- read.csv("C://data/dataPlanning/metadata/attributes.csv") %>%
+    filter(fileName == "milestonesPhDset.csv") %>%
+    select(variableName, description) #%>%
+  #qsummary("fileName")
+
+names(datNAMES)
+# dataspice::edit_attributes()
+
+DT::datatable(datNAMES)
+```
+
+### Baseline wrangling
+
+To visualise the dataset used for this planning toolwe need to filter, split and re-arrange the above baseline dataset.
+
+#### Direction
+
+```{r eval = T}
+library(dplyr)
+library(lubridate)
+df <- dat %>%
+        mutate(date = as.Date(dmy(startDate)),
+               month = as.numeric(month))
+
+# names(df)
+# df$date
+#direction
+positions <- c(0.5, -0.5, 1.0, -1.0, 1.5, -1.5)
+directions <- c(1, -1)
+
+line_pos <- data.frame(
+    "date"=unique(df$date),
+    "position"=rep(positions, length.out=length(unique(df$date))),
+    "direction"=rep(directions, length.out=length(unique(df$date)))
+)
+
+text_offset <- 0.2
+
+df <- merge(x=df, y=line_pos, by="date", all = TRUE)
+df <- df[with(df, order(date, status)), ]
+
+df$month_count <- ave(df$date==df$date, df$date, FUN=cumsum)
+
+df$text_position <- (df$month_count * text_offset * df$direction) + df$position
+
+head(df)
+```
+
+#### Counts
+
+```{r eval = T}
+df$month_count <- ave(df$date==df$date, df$date, FUN=cumsum)
+df$text_position <- (df$month_count * text_offset * df$direction) + df$position
+head(df)
+```
+
+#### Buffering times
+
+```{r eval = F}
+# ??remove_missing
+library(ggplot2)
+# df <- df %>%
+#       remove_missing('date')
+
+month_buffer <- 2
+
+month_date_range <- seq(min(df$date) - months(month_buffer), max(df$date) + months(month_buffer), by='month')
+month_format <- format(month_date_range, '%b')
+month_df <- data.frame(month_date_range, month_format)
+
+year_date_range <- seq(min(df$date) - months(month_buffer), max(df$date) + months(month_buffer), by='year')
+year_date_range <- as.Date(
+    intersect(
+        ceiling_date(year_date_range, unit="year"),
+        floor_date(year_date_range, unit="year")
+    ),  origin = "1970-01-01"
+)
+year_format <- format(year_date_range, '%Y')
+year_df <- data.frame(year_date_range, year_format)
+```
+
+
+```{r}
+#need to refactor etc for this to work
+```
+
+```{r eval = F}
+# timeline_plot <-filter(df, status != "NA") %>%
+#   ggplot(aes(x=date,y=0, col=week, label=milestone)) +
+#   labs(col="Milestones")+ 
+#   scale_color_manual(values=status_colors, labels=status_levels, drop = FALSE)+
+#   theme_classic() +
+#   geom_hline(yintercept=0, color = "black", size=0.3) #+
+  # facet_wrap(~project)
+
+# # Plot vertical segment lines for milestones
+# timeline_plot<-timeline_plot+geom_segment(data=df[df$month_count == 1,], aes(y=position,yend=0,xend=date), color='black', size=0.2)
+# 
+# # Plot scatter points at zero and date
+# timeline_plot<-timeline_plot+geom_point(aes(y=0), size=3)
+# 
+# # Don't show axes, appropriately position legend
+# timeline_plot<-timeline_plot+theme(axis.line.y=element_blank(),
+#                  axis.text.y=element_blank(),
+#                  axis.title.x=element_blank(),
+#                  axis.title.y=element_blank(),
+#                  axis.ticks.y=element_blank(),
+#                  axis.text.x =element_blank(),
+#                  axis.ticks.x =element_blank(),
+#                  axis.line.x =element_blank(),
+#                  legend.position = "bottom"
+#                 )
+# 
+# # Show text for each month
+# timeline_plot<-timeline_plot+geom_text(data=month_df, aes(x=month_date_range,y=-0.1,label=month_format),size=2.5,vjust=0.5, color='black', angle=90)
+# 
+# # Show year text
+# timeline_plot<-timeline_plot+geom_text(data=year_df, aes(x=year_date_range,y=-0.2,label=year_format, fontface="bold"),size=2.5, color='black')
+
+# Show text for each milestone
+# timeline_plot<-timeline_plot+geom_text(aes(y=text_position,label=shortName),size=4)
+# timeline_plot
+```
+
+### Adding data sources...
+
+
+#### Importing exCalendars
+
+For calendars the main issues are involved with the different types of applications available for viewing and managing different calendars are different for `gmail`, `outlook` and even within different windows programs. These are my notes on where my calendar appointments are currently held.
+
+##### `.iCal` data
+
+```{r}
+#this currently online
+```
+
+#### Microsoft planner
+
+Microsoft tools are commonly used for almost all aspect of academic research. Since 2019, Microsoft has integrated SharePoint, OneNote,Automate and Planner for task management and planning.
+
+My fortnightly timetable exploits the features of the Microsoft tools above and RStudio to create dynamic reports and interactive reports in the future.
+
+```{r}
+knitr::opts_chunk$set(echo=FALSE,
+               message=FALSE,
+               warning=FALSE,
+               kableExtra.auto_format = FALSE)
+```
+
+Provide a basic outline of tasks (`Task column`) to be completed for each chapter and  how the required work will be completed and integrated into the chapter. 
+
+Microsoft planner has the following headers:
+
+```
+YAML(ish): x3
+first three lines
+then space
+column names
+```
+
+```{r}
+MplannerNames <- c("Task",
+                   "ID",	
+                   "'Task Name'",	
+                   "'Bucket Name'",	
+                   "Progress",	
+                   "Priority",	
+                   "'Assigned To'",	
+                   "'Created By'",
+                   "'Created Date'",	
+                   "'Start Date'",
+                   "'Due Date'",
+                   "Late",
+                   "'Completed Date'",
+                   "'Completed By'",
+                   "Description",
+                   "Completed",
+                   "Checklist", 
+                   "Items",
+                   "'Checklist Items'",
+                   "Labels")
+
+# baselineNames <- 
+  
+  
+  # c()
+# levels()  = Subject == shortName
+            
+```
+
+
+### Visualising database
+
+There are several aspects of the underlying baseline dataset that I have written functions/code for.
+
+#### Milestones
+
+The simplist of the reduced datasets. This consists of the following columns:
+
+```{r}
+# milestone, 
+```
+
+And filtered by only the Phd milestones using:
+
+```{r}
+
+```
+
+##### SHortcut
+
+Here to make this simplier for now I have just made a csv file for each chapter with the following headings... (these will later be turned into code to transform baseline into this).
+
+#### Fortnightly timetable
+
+This is one of the most detailed tables the baseline dataset can create. This consists of the following variables:
+
+```{r}
+
+
+```
+
+
+#### Import lists on a dayly basis
+
+To do this simply write the "back" transformed baseline dataset to the format of mircosoft task likes
+
+1. Upload this csv file
+
+2. Look at new tasks and modify 
+
+#### Bernd Gurber's IAE variation
+
+When I first began my canditure I was given a simple personalisable calendar. Throughout my canditidure I have updated and adding milestones to this information. 
+
+```{r results = "asis", include = T}
+library(DT)
+library(selectr)
+library(dplyr)
+library(ggplot2)
+source("C://PhD/APR-annualProgress-Report/R/berndsphdcalendar.R")
+# source("C://PhD/APR-annualProgress-Report/R/berndsKEYdatesOUTPUT.R")
+```
+
+```{r eval = F, results = "asis", include = F}
+datKEYdates2 <- datKEYdates1
+
+# %>%
+#   select(shortName)%>%
+#   filter(shortName !="NA")
+
+# DT::datatable(head(datKEYdates2))
+
+library(dplyr)
+library(ggplot2)
+# ??remove_missing
+
+
+# remove_missing(df = datKEYdates2, vars = c("values"))
+
+datKEYdates3 <- datKEYdates2 %>%
+  filter(!values == " ")
+
+datatable(datKEYdates3, options = list(
+  searching = FALSE,
+  pageLength = 5,
+  lengthMenu = c(5, 10, 15, 20)
+))
+library(ggrepel)
+```
+
+```{r eval = FALSE, results = "asis", include = F}
+# datCUR1
+datCUR1 <- read_csv("C://data/dataPlanning/milestonesPhDset.csv")
+df <- datCUR1
+
+df <- read.csv(here::here("./data/milestones.csv"))
+df <- datCUR1
+
+
+
+timeline_plot <- filter(df, status != "NA") %>%
+  ggplot(aes(x=date,y=0, col=status, label=milestone)) +
+  labs(col="Milestones")+ 
+  scale_color_manual(values=status_colors, labels=status_levels, drop = FALSE)+
+  theme_classic() +
+  geom_hline(yintercept=0, color = "black", size=0.3) #+
+  # facet_wrap(~project)
+
+# # Plot vertical segment lines for milestones
+timeline_plot<-timeline_plot+geom_segment(data=df[df$month_count == 1,], aes(y=position,yend=0,xend=date), color='black', size=0.2)
+# 
+# # Plot scatter points at zero and date
+timeline_plot<-timeline_plot+geom_point(aes(y=0), size=3)
+# 
+# # Don't show axes, appropriately position legend
+# timeline_plot<-timeline_plot+theme(axis.line.y=element_blank(),
+#                  axis.text.y=element_blank(),
+#                  axis.title.x=element_blank(),
+#                  axis.title.y=element_blank(),
+#                  axis.ticks.y=element_blank(),
+#                  axis.text.x =element_blank(),
+#                  axis.ticks.x =element_blank(),
+#                  axis.line.x =element_blank(),
+#                  legend.position = "bottom"
+#                 )
+# 
+# # Show text for each month
+# timeline_plot<-timeline_plot+geom_text(data=month_df, aes(x=month_date_range,y=-0.1,label=month_format),size=2.5,vjust=0.5, color='black', angle=90)
+# 
+# # Show year text
+# timeline_plot<-timeline_plot+geom_text(data=year_df, aes(x=year_date_range,y=-0.2,label=year_format, fontface="bold"),size=2.5, color='black')
+
+# Show text for each milestone
+timeline_plot<-timeline_plot+geom_text(aes(y=text_position,label=shortName),size=4)
+timeline_plot
+```
+
+#### Variable names standard
+
+```{r}
+# Task ID	Task Name	Bucket Name	Progress	Priority	Assigned To	Created By	Created Date	Start Date	Due Date	Late	Completed Date	Completed By	Description	Completed Checklist Items	Checklist Items	Labels
+
+```
+
+TEAMS AND SHAREPOINT ARE FUNNYLLLLLL explain in PhD planner repo online [here](www.github.io/Phdtimeline2020).
+
+Full details should be given in the `Description` column. To do this I have reduced the baseline dataset into a smaller selected dataset of ....
+
+- Description = `explaination of task`
+- Task = `shortName`
+- startDate = `date task starts`
+
+```{r}
+library(readr)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+
+datFutureTime <- read.csv("C://PhD/APR-annualProgress-Report/data/all_phD_boundTogetherAUG2020_NONAMES.csv") %>%
+    select(shortName, startDate, GeneralDesc, Tasks, impact, status, Chapter) %>%
+    remove_missing()
+
+# glimpse(datFutureTime)
+```
+
+And then using R I have split the plots and a tab for each week in sections...
+
+```{r}
+ggplot(datFutureTime, aes(x = dmy(startDate), y = impact, group = impact)) + 
+  # geom_rect(aes(xmin=min(datCUR1$trueDate),xmax = max(datCUR1$trueDate), ymin = -inf , ymax = inf ))  +
+  geom_point(aes(x = dmy(startDate), y = impact, group = impact, shape = impact), size = 4, alpha = 0.7,  size = 5, col = "black", fill = "green") +
+  
+  
+  # geom_line(size = 0.9, col = "grey50", lty = 3) +
+  xlab("trueDate number") +
+  ylab("Chapter") +
+  # facet_grid(Chapter~status) + 
+  # geom_label(aes(x = trueDate, y = impact, label = shortName),  size = 2) +
+  # theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        # panel.spacing = unit(2, "lines"),
+        panel.border = element_blank(),
+
+        axis.title.y = element_text(colour = "black", angle = 90),
+        axis.title.x = element_text(colour = "black"),
+
+        axis.text.y=element_text(colour = "black"),
+        axis.text.x = element_text(colour = "black"),
+
+        axis.ticks.x = element_line(size = 1),
+        axis.ticks.y = element_line(size = 1),
+
+        axis.line.x = element_line(size = 1),
+        axis.line.y = element_line(size = 1))
+# %>%
+   # facet_grid(month~Chapter)
+
+  # ggplotly() + p1
+
+# vignette(package = "plotly")
+# p1
+```
+
+```{r, results='asis'}
+library(knitr)
+
+
+# datCUR1 <- datCUR %>%
+#             dplyr::select(milestone, month, year, status, shortName, Notes, startDate, Chapter) %>%
+#   mutate(date = as.Date(dmy(startDate)),
+#         status = as.factor(status)
+#          # month = as.numeric(month),
+#          # year = as.numeric(year)
+#          )
+
+
+# datCUR1
+datCUR1 <- read_csv("C://PhD/APR-annualProgress-Report/data/oldData/milestonesPhDset.csv")
+df <- datCUR1
+
+##different code...old one needed to make old data work
+# df <- read.csv(here::here("./data/milestones.csv"))
+# df <- datCUR1
+
+library(lubridate)
+library(ggforce)
+
+dt <- data.frame(mon = c(10, 4), day = c(10, 4), year = c(2017, 2018))
+with(dt, ymd(paste(year, mon, day, sep = "-")))
+
+#> [1] "2017-10-10" "2018-04-04"
+# 
+# df$date <- with(datCUR1, ymd(sprintf('%04d%02d%02d', 'year', 'month', 1)))
+
+# df <- df[with(df, order(df$date)), ]
+# head(df)
+text_offset <- 0.05
+
+df1 <- df %>%
+  mutate(status = as.factor(status),
+        trueDate = as.Date(dmy(startDate)))
+
+n <- length(levels(df1$status))
+n <- 2
+
+# Make main plot
+plot <- ggplot(datCUR1, aes(x = startDate, y = status, col = shortName)) +
+  geom_point(size = 2) +
+  geom_label_repel(aes(label = shortName, y = status, x = startDate))
+
+# Facet_*_paginate loop over facets
+plots <- lapply(seq_len(n), function(i) {
+  plot + facet_wrap_paginate(~ status, ncol = 2, nrow = 2, page = i)
+})
+
+# Print a tab and a plot for each n
+# Important to set "results = 'asis'" in chunk options
+for (i in seq_len(n)) {
+  cat(paste0("\n\n### Tab ", i, "\n"))
+  print(plots[[i]])
+}
+```
+
+
+> Please also complete and attach, the Fortnightly Timeline, to your PhD Extension application. The simple excel template provided from the SciTech department is a good start but working with tasking and planning has been extended by many different variations and approaches. 
+
+For a PhD the key aspects for project management from a template or tool is:
+
+1. Scalable
+2. Accessible
+3. Longevity/Versatility (Mac Windows etc...)
+
+![image-20200831093037666](C:\Code\PhDplanningAUG2020\img\image-20200831093037666.png)
+
+##### First fortnight
+
+```{r eval = F}
+#embed snapshot of site in future
+# source("C://PhD/APR-annualProgress-Report/R/datALLchapters.R")
+# p1
+
+# Set axis limits c(min, max)
+min <- as.Date("2020-08-10")
+max <- as.Date("2020-08-24")
+p2 + 
+  scale_x_date(limits = c(min, max), 
+               date_breaks = "1 day",
+               # expand = c(0.5,0.5),
+               date_labels = "%b %d") +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+> To do this and proactively reduce distractions in PhD work I have created a reproducible workflow using the same tools I have developed for my PhD.A full "draft" manual can be found [here:](https://davan690.github.io/PhDtimeline2020/).
+
+##### Second Fortnight
+
+```{r eval = F}
+#embed snapshot of site in future
+source(here::here("./R/datALLchapters.R"))
+
+# Set axis limits c(min, max)
+min <- as.Date("2020-08-25")
+max <- as.Date("2020-09-10")
+p2 + 
+  scale_x_date(limits = c(min, max), 
+               date_breaks = "1 day",
+               # expand = c(0.5,0.5),
+               date_labels = "%b %d") +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+##### 3rd Fortnight
+
+```{r eval = F}
+#embed snapshot of site in future
+source(here::here("./R/datALLchapters.R"))
+# p1
+
+# Set axis limits c(min, max)
+min <- as.Date("2020-09-11")
+max <- as.Date("2020-09-25")
+p2 + 
+  scale_x_date(limits = c(min, max), 
+               date_breaks = "1 day",
+               # expand = c(0.5,0.5),
+               date_labels = "%b %d") +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+#### Interactive dashboard
+
+
+> In the future this should be an interactive dashboard.
+
+```{r}
+library(ggplotlyExtra)
+
+# ggplotlyExtra::ggplotly_histogram
+
+```
+
+
+<!-- ## Sections {.tabset} -->
+
+<!-- ```{r, results='asis', eval = F} -->
+<!-- n <- 10 -->
+
+<!-- # Make main plot -->
+<!-- plot <- ggplot(diamonds) + -->
+<!--     geom_point(aes(carat, price), alpha = 0.1)  -->
+
+<!-- # Facet_*_paginate loop over facets -->
+<!-- plots <- lapply(seq_len(n), function(i) { -->
+<!--   plot + facet_wrap_paginate(~ cut:clarity, ncol = 1, nrow = 1, page = i) -->
+<!-- }) -->
+
+<!-- # Print a tab and a plot for each n -->
+<!-- # Important to set "results = 'asis'" in chunk options -->
+<!-- for (i in seq_len(n)) { -->
+<!--   cat(paste0("\n\n### Tab ", i, "\n")) -->
+<!--   print(plots[[i]]) -->
+<!-- } -->
+<!-- ``` -->
+
+#### Other data
+
+Bernds timeline is a full function that asks for a single name and starting date and produces a visual representation of the year using the following dataframe.
+```
+##  [1] "startDate"   "status"      "Chapter"     "week"        "shortName"  
+##  [6] "GeneralDesc" "Tasks"       "Notes"       "trueDate"    "Month_Year"
+##  [1] "X1"        "year"      "month"     "yweek"     "mweek"     "yday"     
+##  [7] "mday"      "hour"      "minute"    "weekday"   "bizday"    "season"   
+## [13] "values"    "week"      "monthweek"
+##  chr [1:20] "2019-07" "2020-03" "2020-06" "2020-07" "2020-07" "2020-07" ...
+```
+
+Bernd and others have made timelines in R using the following R script:
+
+```{r}
+
+```
+
+Aspects of this simple timeline are incoperated as so:
+
+```{r}
+
+```
+
+
+#### `.xlsx`
+
+These are excel workbooks. For now this is very simple and works with the current version of excel files (2020). Each "sheet" of the excel file contains a single projects information. This is then converted to a csv file when needed. In the future each project will have its own file that can be added to or modified in a shiny interactive web app.
+
+```{r}
+#excel read
+
+#number of sheets in project currently
+
+
+## Saved as csv's and imported as so below...
+```
+
+> A key aspect of these R scripts is the date format. This has been challenging to work with but currently I have the following notes on the transformation of the date/time data from excel and manually (with csv file below).
+
+#### Outlook
+
+There are many ways to download outlook data but the manual and simplist way is to make a folder and save everything you want to use in that folder. Then download this as a `.csv` file and use the code below to visualise the data directly.
+
+#### `.csv drafts folder`
+
+To make this easy to begin with I have downloaded `.csv` files are in data and look like so:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+
+datCUR <- readr::read_csv("C://data/dataPlanning/PhDProjects.csv")
+
+datOUTLOOKcsv <- read_csv("C://data/dataPlanning/emails_download.CSV")
+```
+
+*Sort out colomn names*
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# names(datOUTLOOKcsv)
+#rename issue spaces for now
+#july2020
+
+colnames(datOUTLOOKcsv) <- gsub(" ","",colnames(datOUTLOOKcsv))
+
+names(datCUR)
+names(datOUTLOOKcsv)
+```
+
+##### Re-sturucture outlook data
+
+Maybe this can be generalised to `ical` data.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+datOUTLOOKcsv1 <- datOUTLOOKcsv %>%
+                    mutate(date =  as.Date(StartDate), 
+                           shortName = Subject,
+                           individualsNEEDED = MeetingOrganizer,
+                           status = "Outlook") %>%
+                      dplyr::select(shortName, date, individualsNEEDED, status)
+
+#join with all emails dataset
+datALL <- full_join(datCUR, datOUTLOOKcsv1) %>%
+            dplyr::select(milestone, month, year, status, shortName, Notes, startDate) %>%
+  mutate(date = as.Date(startDate)#,
+         # month = as.numeric(month),
+         # year = as.numeric(year)
+         )
+
+str(datALL)
+
+#sort out important calender events to add...
+#need to be clever about this
+#so it can be replicated
+#Anthony 2020
+library(tidyr)
+#drop NAs
+
+datALL1 <- datALL %>%
+            dplyr::select(milestone, month,status) %>%
+            mutate(milestone = as.factor(milestone),
+                   month = as.factor(month),
+                   status = as.factor(status))%>%
+                     drop_na()
+            
+summary(datALL1)
+
+df <- datALL1
+```
+
+```{r}
+#factoring
+status_levels <- c("Complete", "On Target", "At Risk", "Critical")
+status_colors <- c("#0070C0", "#00B050", "#FFC000", "#C00000")
+df$status <- factor(df$status, levels=status_levels, ordered=TRUE)
+```
+
+#### Gmail import
+
+```{r}
+library(shiny)
+
+shiny::runExample()
+
+library(shinydashboardPlus)
+
+shinydashboardPlusGallery()
+
+```
+
+#### Microsoft planner
+
+Microsoft tools are commonly used for almost all aspect of academic research. Since 2019, Microsoft has integrated SharePoint, OneNote,Automate and Planner for task management and planning.
+
+My fortnightly timetable exploits the features of the Microsoft tools above and RStudio to create dynamic reports and interactive reports in the future.
+
+```{r}
+knitr::opts_chunk$set(echo=FALSE,
+               message=FALSE,
+               warning=FALSE,
+               kableExtra.auto_format = FALSE)
+```
+
+Provide a basic outline of tasks (`Task column`) to be completed for each chapter and  how the required work will be completed and integrated into the chapter. 
+
+Microsoft planner has the following headers:
+
+```
+YAML(ish): x3
+first three lines
+then space
+column names
+```
+
+```{r}
+MplannerNames <- c("Task",
+                   "ID",	
+                   "'Task Name'",	
+                   "'Bucket Name'",	
+                   "Progress",	
+                   "Priority",	
+                   "'Assigned To'",	
+                   "'Created By'",
+                   "'Created Date'",	
+                   "'Start Date'",
+                   "'Due Date'",
+                   "Late",
+                   "'Completed Date'",
+                   "'Completed By'",
+                   "Description",
+                   "Completed",
+                   "Checklist", 
+                   "Items",
+                   "'Checklist Items'",
+                   "Labels")
+
+# baselineNames <- 
+  
+  
+  # c()
+# levels()  = Subject == shortName
+            
+```
+
+#### Sharing data
+
+![image-20200826200717201](C:\Code\PhDplanningAUG2020\img\image-20200826200717201.png)
+
+There are two manual methods sharpoint surveys and tasklists.
+
+SEE VIGNETTE>...
+
+#### Import lists on a dayly basis
+
+To do this simply write the "back" transformed baseline dataset to the format of mircosoft task likes
+
+Upload this csv file
+
+Look at new tasks and modify 
+
+```{r}
+# Task ID	Task Name	Bucket Name	Progress	Priority	Assigned To	Created By	Created Date	Start Date	Due Date	Late	Completed Date	Completed By	Description	Completed Checklist Items	Checklist Items	Labels
+
+```
+
+TEAMS AND SHAREPOINT ARE FUNNYLLLLLL explain herelll
+
+#### Table of tasks
+
+Full details should be given in the `Description` column. To do this I have reduced the baseline dataset into a smaller selected dataset of ....
+
+- Description = `explaination of task`
+- Task = `shortName`
+- startDate = `date task starts`
+
+```{r}
+
+```
+
+And then using R I have split the plots and a tab for each week in sections...
+
+```{r}
+
+```
+
+#### Final datasets
+
+[*as of 18/10/2020*]
+
+##### Files and documentation
+
+```
+list.files("./")
+
+
+    ##  [1] "Calendar.Rmd"             "Calendar2.Rmd"           
+    ##  [3] "CasualWork.Rmd"           "Covid19.Rmd"             
+    ##  [5] "data"                     "DataWrangling.nb.html"   
+    ##  [7] "DataWrangling.Rmd"        "docs"                    
+    ##  [9] "index.Rmd"                "LICENSE"                 
+    ## [11] "PhDplanningAUG2020.Rproj" "R"                       
+    ## [13] "README.md"                "README.nb.html"          
+    ## [15] "README.Rmd"               "reportTemplate.nb.html"  
+    ## [17] "reportTemplate.Rmd"       "Timeline.Rmd"
+```
+
+##### My version	
+
+```
+startDate, status, Chapter, week, shortName, GeneralDesc, Tasks, Notes, trueDate, Month_Year	X1, year, month, yweek, mweek, yday, mday, hour, minute, weekday, bizday, season, values, week, monthweek
+ 	 
+##  [1] "eventCode"         "shortName"         "week"             
+##  [4] "month"             "semester"          "year"             
+##  [7] "startDate"         "finishDate"        "startTime"        
+## [10] "endTime"           "project"           "individualsNEEDED"
+## [13] "milestone"         "status"            "PreCovidDATE"     
+## [16] "References"        "attachment"        "cost"             
+## [19] "DateDue"           "Chapter"           "Focus"            
+## [22] "Abstract"          "Structure"         "GeneralDesc"      
+## [25] "Tasks"             "Notes"             "AntCOMS"          
+## [28] "Bernds Comments"   "Richards Comments" "costCentre"
+## tibble [87 x 30] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ eventCode        : chr [1:87] "phd20200701004" "fundphd000" "fundphd001" "fundphd002" ...
+##  $ shortName        : chr [1:87] "tidyPipesPhD" "scholarship1" "scholarship2sick" "scholarship3" ...
+##  $ week             : logi [1:87] NA NA NA NA NA NA ...
+##  $ month            : chr [1:87] "october" "april" "march" "june" ...
+##  $ semester         : chr [1:87] NA "s2" "s1" "all" ...
+##  $ year             : num [1:87] 2020 2016 2018 2019 2020 ...
+##  $ startDate        : chr [1:87] "1/03/2020" "7/04/2016" "8/03/2019" "8/06/2019" ...
+##  $ finishDate       : chr [1:87] "8/10/2019" "7/09/2019" "7/06/2019" "30/05/2020" ...
+##  $ startTime        : 'hms' num [1:87] NA NA NA NA ...
+##   ..- attr(*, "units")= chr "secs"
+##  $ endTime          : 'hms' num [1:87] NA NA NA NA ...
+##   ..- attr(*, "units")= chr "secs"
+##  $ project          : chr [1:87] "PhD" "PhD" "PhD" "PhD" ...
+##  $ individualsNEEDED: chr [1:87] "Anthony" "Anthony" "Anthony" "Anthony" ...
+##  $ milestone        : chr [1:87] "PhDmilestone 5" "PhDmilestone 37" "PhDmilestone 38" "PhDmilestone 39" ...
+##  $ status           : chr [1:87] "On Target" "Complete" "Complete" "Complete" ...
+##  $ PreCovidDATE     : chr [1:87] "1/03/2020" "7/09/2019" "7/06/2019" "30/05/2020" ...
+##  $ References       : chr [1:87] NA "./data/pdfs/" "./data/pdfs/" "./data/pdfs/" ...
+##  $ attachment       : chr [1:87] NA "Personal stress" "Personal stress" "Personal stress" ...
+##  $ cost             : logi [1:87] NA NA NA NA NA NA ...
+##  $ DateDue          : chr [1:87] NA NA NA NA ...
+##  $ Chapter          : chr [1:87] "1" "all" "all" "all" ...
+##  $ Focus            : chr [1:87] NA NA NA NA ...
+##  $ Abstract         : chr [1:87] NA NA NA NA ...
+##  $ Structure        : chr [1:87] NA NA NA NA ...
+##  $ GeneralDesc      : chr [1:87] "key tasks" "key pay" "key pay" "key pay" ...
+##  $ Tasks            : chr [1:87] "draft MPD paper2 case study results?" NA NA NA ...
+##  $ Notes            : chr [1:87] NA NA NA NA ...
+##  $ AntCOMS          : chr [1:87] NA NA NA NA ...
+##  $ Bernds Comments  : chr [1:87] NA NA NA NA ...
+##  $ Richards Comments: logi [1:87] NA NA NA NA NA NA ...
+##  $ costCentre       : chr [1:87] NA "cc2291" "cc2291" "cc7858" ...
+##  - attr(*, "spec")=
+##   .. cols(
+##   ..   eventCode = col_character(),
+##   ..   shortName = col_character(),
+##   ..   week = col_logical(),
+##   ..   month = col_character(),
+##   ..   semester = col_character(),
+##   ..   year = col_double(),
+##   ..   startDate = col_character(),
+##   ..   finishDate = col_character(),
+##   ..   startTime = col_time(format = ""),
+##   ..   endTime = col_time(format = ""),
+##   ..   project = col_character(),
+##   ..   individualsNEEDED = col_character(),
+##   ..   milestone = col_character(),
+##   ..   status = col_character(),
+##   ..   PreCovidDATE = col_character(),
+##   ..   References = col_character(),
+##   ..   attachment = col_character(),
+##   ..   cost = col_logical(),
+##   ..   DateDue = col_character(),
+##   ..   Chapter = col_character(),
+##   ..   Focus = col_character(),
+##   ..   Abstract = col_character(),
+##   ..   Structure = col_character(),
+##   ..   GeneralDesc = col_character(),
+##   ..   Tasks = col_character(),
+##   ..   Notes = col_character(),
+##   ..   AntCOMS = col_character(),
+##   ..   `Bernds Comments` = col_character(),
+##   ..   `Richards Comments` = col_logical(),
+##   ..   costCentre = col_character()
+##   .. )
+
+```

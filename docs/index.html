@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>A PhD template for tasks and timelines in a COVID19 world</title>
+  <meta name="description" content="A simple baseline dataset to generate weekly timelines and task list in RMarkdown. I have developed this from a minimal example of using the bookdown package to write a book and reproducible report. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="A PhD template for tasks and timelines in a COVID19 world" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A simple baseline dataset to generate weekly timelines and task list in RMarkdown. I have developed this from a minimal example of using the bookdown package to write a book and reproducible report. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="A PhD template for tasks and timelines in a COVID19 world" />
+  
+  <meta name="twitter:description" content="A simple baseline dataset to generate weekly timelines and task list in RMarkdown. I have developed this from a minimal example of using the bookdown package to write a book and reproducible report. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Anthony Davidson" />
+
+
+<meta name="date" content="2020-11-10" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="intro.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.15/datatables.js"></script>
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Dynamic and reproducible reporting for graduate research</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Overview</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#proposal"><i class="fa fa-check"></i><b>1.1</b> Proposal</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Background</a></li>
+<li class="chapter" data-level="3" data-path="method.html"><a href="method.html"><i class="fa fa-check"></i><b>3</b> Methods</a><ul>
+<li class="chapter" data-level="3.0.1" data-path="method.html"><a href="method.html#data"><i class="fa fa-check"></i><b>3.0.1</b> Data</a></li>
+<li class="chapter" data-level="3.0.2" data-path="method.html"><a href="method.html#baseline-wrangling"><i class="fa fa-check"></i><b>3.0.2</b> Baseline wrangling</a></li>
+<li class="chapter" data-level="3.0.3" data-path="method.html"><a href="method.html#adding-data-sources"><i class="fa fa-check"></i><b>3.0.3</b> Adding data sources…</a></li>
+<li class="chapter" data-level="3.0.4" data-path="method.html"><a href="method.html#visualising-database"><i class="fa fa-check"></i><b>3.0.4</b> Visualising database</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>4</b> Application</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="application.html"><a href="application.html#apr"><i class="fa fa-check"></i><b>4.0.1</b> APR</a></li>
+<li class="chapter" data-level="4.0.2" data-path="application.html"><a href="application.html#council-tasks"><i class="fa fa-check"></i><b>4.0.2</b> Council Tasks</a></li>
+<li class="chapter" data-level="4.0.3" data-path="application.html"><a href="application.html#future-options."><i class="fa fa-check"></i><b>4.0.3</b> Future options….</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A PhD template for tasks and timelines in a COVID19 world</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">A PhD template for tasks and timelines in a COVID19 world</h1>
+<p class="author"><em>Anthony Davidson</em></p>
+<p class="date"><em>2020-11-10</em></p>
+</div>
+<div id="corro" class="section level1 tabset">
+<h1><span class="header-section-number"> 1</span> Overview</h1>
+<p>Constructing, managing and submitting PhD timelines can be a time consuming and often fruitless venture. I have found that creating realistic timelines, tasklists and milestones for graduate research hard to produce due to unpredictable outcomes of research (e.g time taken to collect data and produce results and publish results). This has been made even more challenging under COVID19 conditions because of the unpredictable nature of the disease and the impacts of the pandemic both economically and socially throughout the community.</p>
+<blockquote>
+<p>Note: Orginally I wanted to create a simple shiny dashboard that automatically generates a reproducible report including an integrated task, milestone and time management system for graduate research planning with examples from my own PhD work.</p>
+</blockquote>
+
+<div id="proposal" class="section level2">
+<h2><span class="header-section-number">1.1</span> Proposal</h2>
+<p>This repository is a draft of the baseline approach I am using for my own time management for the last 6months of my PhD but could easily extended to similar graduate research, professional projects and consulting situations.</p>
+<div id="outputs" class="section level4 tabset.tabpills">
+<h4><span class="header-section-number">1.1.0.1</span> Outputs</h4>
+<p>The results of the scripts and functions within this repository are focused around the baseline dataset and different combinations of these core variables. The baseline dataset (name: <code></code>) and core code has been developed and extended from other open source science projects.</p>
+<div id="stage-one-baseline-dataset" class="section level5">
+<h5><span class="header-section-number">1.1.0.1.1</span> Stage One: Baseline dataset</h5>
+<p>Each individual graduate student will have a collection of data, methods and tools needed to conceptualize, create and produce a thesis however by structuring a timeline around key dates (<em>milestones</em>) within the same task lists database. This database is based on a simple collection of key variables. To begin with, the standard milestones and key dates can be generated based of each individuals unique starting date using an extension of Bernd’s script:</p>
+<p><em>Milestones</em></p>
+<p><em>Timeline</em></p>
+<p>This function generates a timeline from the baseline dataset grouped by chapter impact or status….</p>
+<p><em>Task lists</em></p>
+</div>
+<div id="stage-two-updated-oct-2020" class="section level5">
+<h5><span class="header-section-number">1.1.0.1.2</span> Stage two (updated Oct 2020)</h5>
+<blockquote>
+<p>August2020: I developed this idea further down the track of an interactive web application using shiny.</p>
+</blockquote>
+<blockquote>
+<p>July2020: I developed this idea further down the track of an interactive web application using shiny.</p>
+</blockquote>
+<blockquote>
+<p>June2019: This could be done by hand but I have extended Bernds idea of a timeline etc in R for PhD candidates to include better visualisations and other key points. I see this as being an interactive tool for future candidates if I can find funding to annotate the code properly so someone else with no R knowledge can navigate this.</p>
+</blockquote>
+</div>
+<div id="future-stages" class="section level5 tabset">
+<h5><span class="header-section-number">1.1.0.1.3</span> Future stages</h5>
+<p>With the support of other users there is potential to develop the proposed structure here to create the following extensions of this work.</p>
+<div id="stage-three" class="section level6">
+<h6><span class="header-section-number">1.1.0.1.3.1</span> Stage three</h6>
+<p>Visualise and publish interactive report for SciTech Students. STATUS: [Example of my Phd currently in development]</p>
+</div>
+<div id="stage-four" class="section level6">
+<h6><span class="header-section-number">1.1.0.1.3.2</span> Stage four</h6>
+<p>Intergrate Outlook emails and tasks</p>
+<p>STATUS: [currently methods draft]</p>
+</div>
+<div id="stage-five" class="section level6">
+<h6><span class="header-section-number">1.1.0.1.3.3</span> Stage five</h6>
+<p>Intergrate Microsoft planner</p>
+<p>STATUS: [currently methods draft]</p>
+</div>
+<div id="stage-six" class="section level6">
+<h6><span class="header-section-number">1.1.0.1.3.4</span> Stage six</h6>
+<p>Internal publishing on uni intranet.[currently methods draft]</p>
+<p><em>Possible University of Canberra outputs</em></p>
+<pre><code>- Progress Report
+- APR
+- Research Review
+- Scholarship applications
+- Timelines
+- Future tasklists/goals</code></pre>
+</div>
+</div>
+<div id="side-projects" class="section level5">
+<h5><span class="header-section-number">1.1.0.1.4</span> Side projects</h5>
+<p>[<em>coming</em>]</p>
+<p>SEE the<code>tidyPipes</code> MANUAL for general concept and approach. This repository contains example data and scripts needed to visualize and communicate multiple different projects including:</p>
+<ul>
+<li><code>ACTSeedlings/</code>[<em>coming</em>]</li>
+<li><code>DynamicCVs/</code>[<em>coming</em>]</li>
+<li><code>flatttingRMDstlyle/</code> (a repository for documenting and recording reproducible reports for my flatting arrangements).</li>
+<li><code>PhDplanningRMDstyle/</code> (the documentation and reporting for the final 6months of my PhD).</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Dynamic and reproducible reporting for graduate research.pdf", "Dynamic and reproducible reporting for graduate research.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

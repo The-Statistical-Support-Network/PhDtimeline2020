@@ -1,0 +1,22 @@
+# Application {.tabset}
+
+```{r}
+library(ggrepel)
+```
+
+### APR
+
+I have currently used this framework to build my own APR repository for the final 6 months of my PhD. I have not made this a template yet however with some development this could be scalable to SciTech and wider. 
+
+### Council Tasks
+
+```{r}
+
+```
+
+### Future options....
+
+```{r}
+
+```
+

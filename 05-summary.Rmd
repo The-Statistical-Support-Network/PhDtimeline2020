@@ -1,0 +1,204 @@
+## Reproducible report 
+
+Submitting and managing PhD timelines under COVID19 conditions is challenging because of the unpredictable nature of the disease and the impacts of this both economically and socially. This is a dynamic tasklist and timeline for the final six months of my PhD including the aspects required to apply for the SciTech Scholarship application.
+SciTech Faculty report for graduate planning is developed from the information needed for the SciTech Application process.
+
+NOTE: To help make this submission reproducible I have converted the orginal word document for the SciTEch scholarship application into Rmd (a format to produce reports and outputs in a reproducible structure).
+
+This reproducible report is an attempt to create a reactive report on my PhD timeline and associated weekly tasks that are a requirement of the COVID19 extention application. This report has taken longer to construct than I had anticapacted however the task list is a core component of the SciTech COVID19 application to finish my PhD within six months of additonal funding.
+
+One of the core contributions my PhD work provides is a collection of reproducible resources for graduate research. These are outcomes that others can use if they would like. This section generates the visualisations from the baseline dataset for an application for a scholarship at the University of Canberra, SciTech Faculty.
+
+*[STILL COMING]*
+
+Overall, to meet the objective of this project the shiny app must capture and visualise the core aspects of the dataset. These are the timeline, milestones and fortnightly timetable.
+
+For a PhD the key aspects for project management from a template or tool is:
+
+1. Scalable
+2. Accessible
+3. Longevity/Versatility (Mac Windows etc...)
+
+![image-20200831093037666](C:\Code\PhDplanningAUG2020\img\image-20200831093037666.png)
+
+### Timeline
+
+Current Timeline (`July 2020`)
+
+```{r}
+library(ggplot2)
+library(ggforce)
+```
+
+This is my plan for the final stage of my PhD and submission process. I have created a database of 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+
+datCUR <- readr::read_csv("C://data/dataPlanning/PhDProjectsINCallrelated.csv")
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+
+datCUR <- readr::read_csv("C://data/dataPlanning/PhDProjectsINCallrelated.csv")
+names(datCUR)
+
+str(datCUR)
+```
+
+```{r eval = F}
+timeline_plot <- filter(df, status != "NA") %>%
+  ggplot(aes(x=date,y=0, col=status, label=milestone)) +
+  labs(col="Milestones")+ 
+  scale_color_manual(values=status_colors, labels=status_levels, drop = FALSE)+
+  theme_classic() +
+  geom_hline(yintercept=0, color = "black", size=0.3) #+
+  # facet_wrap(~project)
+
+# # Plot vertical segment lines for milestones
+timeline_plot<-timeline_plot+geom_segment(data=df[df$month_count == 1,], aes(y=position,yend=0,xend=date), color='black', size=0.2)
+# 
+# # Plot scatter points at zero and date
+timeline_plot<-timeline_plot+geom_point(aes(y=0), size=3)
+# 
+# # Don't show axes, appropriately position legend
+# timeline_plot<-timeline_plot+theme(axis.line.y=element_blank(),
+#                  axis.text.y=element_blank(),
+#                  axis.title.x=element_blank(),
+#                  axis.title.y=element_blank(),
+#                  axis.ticks.y=element_blank(),
+#                  axis.text.x =element_blank(),
+#                  axis.ticks.x =element_blank(),
+#                  axis.line.x =element_blank(),
+#                  legend.position = "bottom"
+#                 )
+# 
+# # Show text for each month
+# timeline_plot<-timeline_plot+geom_text(data=month_df, aes(x=month_date_range,y=-0.1,label=month_format),size=2.5,vjust=0.5, color='black', angle=90)
+# 
+# # Show year text
+# timeline_plot<-timeline_plot+geom_text(data=year_df, aes(x=year_date_range,y=-0.2,label=year_format, fontface="bold"),size=2.5, color='black')
+
+# Show text for each milestone
+timeline_plot<-timeline_plot+geom_text(aes(y=text_position,label=shortName),size=4)
+timeline_plot
+```
+
+### Milestones
+
+```{r}
+datCUR1 <- datCUR %>%
+            dplyr::select(milestone, month, year, status, shortName, Notes, startDate) %>%
+  mutate(date = as.Date(startDate),
+        status = as.factor(status)
+         # month = as.numeric(month),
+         # year = as.numeric(year)
+         )
+
+
+# datCUR1
+
+write.csv(datCUR1, "C://data/dataPlanning/milestonesPhDset.csv")
+df <- datCUR1
+
+library(lubridate)
+dt <- data.frame(mon = c(10, 4), day = c(10, 4), year = c(2017, 2018))
+with(dt, ymd(paste(year, mon, day, sep = "-")))
+
+#> [1] "2017-10-10" "2018-04-04"
+
+# df$date <- with(datCUR1, ymd(sprintf('%04d%02d%02d', 'year', 'month', 1)))
+
+# df <- df[with(df, order(date)), ]
+# head(df)
+text_offset <- 0.05
+```
+
+```{r}
+library(ggplot2)
+library(ggforce)
+
+ggplot(datCUR1, aes(x = startDate, y = shortName, col = status)) +
+  geom_point(size = 4) #+
+  # facet_wrap(~)
+```
+
+<!-- ## Plot simple {.tabset} -->
+
+```{r, results='asis', eval = FALSE}
+n <- length(levels(df$status))
+
+# Make main plot
+plot <- ggplot(datCUR1, aes(x = startDate, y = shortName, col = status)) +
+  geom_point(size = 4)
+
+# Facet_*_paginate loop over facets
+plots <- lapply(seq_len(n), function(i) {
+  plot + facet_wrap_paginate(~ status, ncol = 1, nrow = 1, page = i)
+})
+
+# Print a tab and a plot for each n
+# Important to set "results = 'asis'" in chunk options
+for (i in seq_len(n)) {
+  cat(paste0("\n\n### Tab ", i, "\n"))
+  print(plots[[i]])
+}
+```
+
+```{r}
+library(ggplot2)
+# names(datBASE)
+# datBASE$project
+
+ggplot(datCUR1, aes(x = startDate, y = shortName)) +
+  geom_point() + 
+  facet_wrap(~status, scales = "free")
+```
+
+This overview and template is generated for the University of Canberra in 2020.
+
+You can access the How to do your Annual Progress Report 2020 webinar, using the Access Passcode: #APRtime2020
+
+[here](https://us02web.zoom.us/rec/share/yZF6DuvzyG9Le8_UwWfgQooYQanYT6a82yYZrvALz0n3JV-mNlg6xeGnr36RYQ8Z).
+
+Please contact HDR Support on hdrsupport@canberra.edu.au if you have any further questions.
+
+```{r echo = T}
+#child doc
+```
+
+> Once your Primary Supervisor/Approver has submitted their comments and completed your APR, and recorded an Overall Assessment of Progress grade of ‘Satisfactory’ or ‘Unsatisfactory’, you will receive an automated email alert advising you to return to the APR to review those comments.
+
+It is an important step to review your Primary Supervisor comments, and then again print the document for your records, before ticking the Acknowledgment button, and pressing SUBMIT.
+
+As the final step, the APR is forwarded to the Associate Dean Research (ADR) of your Faculty for their review and final assessment.
+
+> **Please Note:** If, three days after your Primary Supervisor/Approver has submitted their comments, you have not reviewed your APR, you will receive a reminder email to do so.
+
+### Tasklists
+
+Please also complete and attach, the Fortnightly Timeline, to your PhD Extension application. The simple excel template provided from the SciTech department is a good start but working with tasking and planning has been extended by many different variations and approaches. 
+
+### Interactive plotting
+
+```{r, results='asis'}
+
+```
+
+> In the future this should be an interactive dashboard.
+
+```{r}
+library(ggplotlyExtra)
+
+# ggplotlyExtra::ggplotly_histogram
+
+```
+
+```{r}
+#shiny app
+# knitr::include_app(url = 'ssnhub.shinyapps.io/nyc_restaurant_shiny/')
+```
